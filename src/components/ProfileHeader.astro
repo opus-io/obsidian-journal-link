@@ -15,16 +15,17 @@ try {
 <header class="relative z-10">
   <div class="flex items-center gap-[24px]">
     <figure
-      class="w-[80px] h-[80px] overflow-hidden shrink-0 border border-fracture bg-slate relative"
+      class="w-[80px] h-[80px] overflow-hidden shrink-0 relative"
+      style="border: 1px solid #3E3C3A;"
     >
-      <div class="absolute top-0 left-0 w-[8px] h-[8px] border-t border-l border-violet opacity-40 pointer-events-none"></div>
-      <div class="absolute bottom-0 right-0 w-[8px] h-[8px] border-b border-r border-violet opacity-40 pointer-events-none"></div>
+      <div class="absolute top-0 left-0 w-[10px] h-[10px] border-t border-l border-espresso opacity-40 pointer-events-none z-10"></div>
+      <div class="absolute bottom-0 right-0 w-[10px] h-[10px] border-b border-r border-espresso opacity-40 pointer-events-none z-10"></div>
       <img
-        src={avatarUrl || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%232A2A2A' width='80' height='80'/%3E%3Ctext x='40' y='48' text-anchor='middle' fill='%236B6860' font-family='monospace' font-size='20'%3EOJ%3C/text%3E%3C/svg%3E"}
+        src={avatarUrl || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%231A1A1A' width='80' height='80'/%3E%3Ctext x='40' y='48' text-anchor='middle' fill='%234A2E1A' font-family='serif' font-size='18'%3EOJ%3C/text%3E%3C/svg%3E"}
         alt={`Profile avatar for ${siteName}`}
         loading="lazy"
         decoding="async"
-        class="w-full h-full object-cover"
+        class="w-full h-full object-cover grayscale-[20%]"
       />
     </figure>
     <div>
@@ -33,7 +34,7 @@ try {
       >
         {siteName}
       </h1>
-      <p class="text-[12px] font-mono text-ash mt-[10px] leading-snug tracking-[0.15em] uppercase">
+      <p class="text-[11px] font-mono text-ash mt-[10px] leading-snug tracking-[0.18em] uppercase">
         {tagline}
       </p>
     </div>

@@ -13,8 +13,8 @@
       --bg3: #2A2A2A;
       --border: #3E3C3A;
       --border2: #4A4846;
-      --violet: #5B2D8E;
-      --violetlight: #7A4A9A;
+      --espresso: #4A2E1A;
+      --leather: #7A4A2A;
       --gold: #8C7B5E;
       --text: #E8E3DC;
       --text2: #6B6860;
@@ -39,7 +39,7 @@
       margin-top: 10vh;
       text-align: center;
     }
-    .login-box h1 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; margin-bottom: 16px; color: var(--violet); }
+    .login-box h1 { font-family: 'Cormorant Garamond', serif; font-size: 28px; font-weight: 300; margin-bottom: 16px; color: var(--espresso); }
     .login-box p { color: var(--text2); font-size: 12px; margin-bottom: 16px; }
     .login-box input {
       width: 100%; max-width: 400px; padding: 12px;
@@ -47,9 +47,9 @@
       color: var(--text); font-family: inherit; font-size: 12px;
       margin-bottom: 12px;
     }
-    .login-box input:focus { outline: none; border-color: var(--violet); }
+    .login-box input:focus { outline: none; border-color: var(--espresso); }
     .login-box .help { font-size: 11px; color: var(--text2); margin-bottom: 16px; }
-    .login-box .help a { color: var(--violet); }
+    .login-box .help a { color: var(--espresso); }
 
     .btn {
       padding: 12px 32px; border: 1px solid var(--border);
@@ -57,24 +57,24 @@
       font-size: 12px; cursor: pointer;
       transition: all 0.3s;
     }
-    .btn:hover { border-color: var(--violetlight); color: var(--text); }
-    .btn-primary { background: var(--violet); color: var(--text); border-color: var(--violet); }
-    .btn-primary:hover { background: var(--violetlight); color: var(--text); }
+    .btn:hover { border-color: var(--leather); color: var(--text); }
+    .btn-primary { background: var(--espresso); color: var(--text); border-color: var(--espresso); }
+    .btn-primary:hover { background: var(--leather); color: var(--text); }
     .btn-danger { border-color: #8B3A3A; color: #8B3A3A; }
     .btn-danger:hover { background: #8B3A3A; color: var(--text); }
     .btn-sm { padding: 6px 14px; font-size: 11px; }
-    .btn-green { border-color: var(--violet); color: var(--violet); }
-    .btn-green:hover { background: var(--violet); color: var(--text); }
+    .btn-green { border-color: var(--espresso); color: var(--espresso); }
+    .btn-green:hover { background: var(--espresso); color: var(--text); }
 
     .header {
       display: flex; justify-content: space-between; align-items: center;
       margin-bottom: 32px; padding-bottom: 16px;
       border-bottom: 1px solid var(--border);
     }
-    .header h1 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; color: var(--violet); }
+    .header h1 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; color: var(--espresso); }
     .header .user-info { font-size: 11px; color: var(--text2); }
     .header .logout { color: var(--text2); cursor: pointer; font-size: 11px; }
-    .header .logout:hover { color: var(--violet); }
+    .header .logout:hover { color: var(--espresso); }
 
     .tabs {
       display: flex; gap: 8px; margin-bottom: 24px;
@@ -86,7 +86,7 @@
       transition: all 0.3s;
     }
     .tab:hover { color: var(--text); border-color: var(--border); }
-    .tab.active { color: var(--violet); border-color: var(--violet); background: var(--bg2); }
+    .tab.active { color: var(--espresso); border-color: var(--espresso); background: var(--bg2); }
 
     .section { display: none; }
     .section.active { display: block; }
@@ -103,10 +103,10 @@
       display: flex; justify-content: space-between; align-items: center;
       transition: all 0.3s;
     }
-    .product-item:hover { border-color: var(--violet); }
+    .product-item:hover { border-color: var(--espresso); }
     .product-item .info h3 { font-size: 14px; color: var(--text); font-family: 'Cormorant Garamond', serif; }
     .product-item .info .meta { font-size: 11px; color: var(--text2); margin-top: 4px; }
-    .product-item .info .meta .featured-badge { color: var(--violet); margin-right: 8px; }
+    .product-item .info .meta .featured-badge { color: var(--espresso); margin-right: 8px; }
     .product-item .actions { display: flex; gap: 8px; }
 
     .modal-overlay {
@@ -121,7 +121,7 @@
       padding: 32px; width: 100%; max-width: 600px;
       margin-top: 5vh;
     }
-    .modal h2 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; color: var(--violet); margin-bottom: 24px; }
+    .modal h2 { font-family: 'Cormorant Garamond', serif; font-size: 22px; font-weight: 300; color: var(--espresso); margin-bottom: 24px; }
     .modal .field { margin-bottom: 16px; }
     .modal .field label {
       display: block; font-size: 11px; color: var(--text2); margin-bottom: 4px; letter-spacing: 0.06em;
@@ -131,7 +131,7 @@
       border: 1px solid var(--border); color: var(--text);
       font-family: inherit; font-size: 12px;
     }
-    .modal .field input:focus, .modal .field textarea:focus { outline: none; border-color: var(--violet); }
+    .modal .field input:focus, .modal .field textarea:focus { outline: none; border-color: var(--espresso); }
     .modal .field textarea { min-height: 80px; resize: vertical; }
     .modal .field.checkbox { display: flex; align-items: center; gap: 8px; }
     .modal .field.checkbox input { width: auto; }
@@ -159,7 +159,7 @@
     }
     .config-section h3 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 17px; font-weight: 300; color: var(--violet); margin-bottom: 16px;
+      font-size: 17px; font-weight: 300; color: var(--espresso); margin-bottom: 16px;
       padding-bottom: 8px; border-bottom: 1px solid var(--border);
     }
     .config-section .field { margin-bottom: 12px; }
@@ -171,7 +171,7 @@
       border: 1px solid var(--border); color: var(--text);
       font-family: inherit; font-size: 12px;
     }
-    .config-section .field input:focus { outline: none; border-color: var(--violet); }
+    .config-section .field input:focus { outline: none; border-color: var(--espresso); }
 
     .logo-grid {
       display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px;
@@ -205,7 +205,7 @@
       opacity: 0; transform: translateY(10px);
     }
     .toast.show { opacity: 1; transform: translateY(0); }
-    .toast.success { border-color: var(--violet); }
+    .toast.success { border-color: var(--espresso); }
     .toast.error { border-color: #8B3A3A; }
 
     .empty-state { color: var(--text2); text-align: center; padding: 48px; font-size: 13px; }
@@ -260,11 +260,11 @@
           <div class="config-grid">
             <div class="field full">
               <label>Site Name</label>
-              <input type="text" id="cfg-siteName" placeholder="@artifak.tech" />
+              <input type="text" id="cfg-siteName" placeholder="@obsidian.journal" />
             </div>
             <div class="field full">
               <label>Tagline</label>
-              <input type="text" id="cfg-tagline" placeholder="CURATED DESK SETUPS." />
+              <input type="text" id="cfg-tagline" placeholder="Depth. Discipline. Distance." />
             </div>
             <div class="field full">
               <label>Avatar URL</label>

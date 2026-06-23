@@ -32,42 +32,44 @@ function getLogoForLink(label: string): { logo: string; tag: string } {
 }
 
 const variantClasses = isFeatured
-  ? "border-violet card-featured-glow"
-  : "border-fracture hover:border-border-secondary";
+  ? "card-featured-glow"
+  : "card-base";
 ---
 
 <div
-  class={`product-card relative bg-slate overflow-hidden transition-all duration-400 group corner-accent ${variantClasses}`}
-  style="border-radius: 2px; animation-delay: ${delay}ms"
+  class={`product-card relative overflow-hidden transition-all duration-400 group corner-accent ${variantClasses}`}
+  style="background: #1A1A1A; animation-delay: ${delay}ms;"
   data-url={product.defaultUrl}
   role="article"
   aria-label={`Product: ${product.title}`}
 >
   {isFeatured && (
-    <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(circle at 50% 0%, rgba(91,45,142,0.06) 0%, transparent 70%);"></div>
+    <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse at 50% 0%, rgba(74,46,26,0.08) 0%, transparent 70%);"></div>
   )}
 
   <div
-    class="absolute top-0 right-0 bg-[#1A1A1A] border-b border-l border-fracture px-[10px] py-[4px] z-20"
+    class="absolute top-0 right-0 bg-[#0D0D0D] z-20"
+    style="border-bottom: 1px solid #3E3C3A; border-left: 1px solid #3E3C3A; padding: 6px 12px;"
   >
-    <span class="font-mono text-[8px] text-ash tracking-[0.15em] uppercase">ID:{product.id}</span>
+    <span class="font-mono text-[8px] text-ash tracking-[0.18em] uppercase">ID:{product.id}</span>
   </div>
 
   <div class="p-[24px] flex items-center justify-between gap-[12px] relative z-10">
     <div class="fast-lane flex items-center gap-[16px] flex-1 cursor-pointer group/fast">
-      <div class="relative overflow-hidden transition-all duration-400 group-hover/fast:border-violetlight" style="border: 1px solid #3E3C3A;">
+      <div class="relative overflow-hidden transition-all duration-400" style="border: 1px solid #3E3C3A;">
         <img
           src={product.image}
           alt={product.imageAlt}
           loading="lazy"
           decoding="async"
-          class="w-[56px] h-[56px] object-cover transition-all duration-400 group-hover/fast:opacity-90"
+          class="w-[56px] h-[56px] object-cover transition-all duration-400 group-hover/fast:opacity-80"
         />
       </div>
       <div class="flex-1 min-w-0">
         {
           product.featured ? (
-            <span class="text-[8px] font-mono text-violet tracking-[0.18em] uppercase mb-[4px] block">
+            <span class="text-[8px] font-mono text-espresso tracking-[0.18em] uppercase mb-[4px] block flex items-center gap-1">
+              <span class="w-1 h-1 bg-espresso inline-block"></span>
               {product.badge}
             </span>
           ) : (
@@ -76,7 +78,7 @@ const variantClasses = isFeatured
             </span>
           )
         }
-        <h2 class="text-[16px] font-display font-light leading-tight text-bone transition-colors duration-400 group-hover/fast:text-violetlight">
+        <h2 class="text-[16px] font-display font-light leading-tight text-bone transition-colors duration-400 group-hover/fast:text-leather">
           {product.title}
         </h2>
 
@@ -84,7 +86,7 @@ const variantClasses = isFeatured
           <div class="flex items-center gap-[8px] mt-[6px]">
             {product.rating && (
               <span class="flex items-center gap-[2px] text-[11px] text-ash">
-                <span class="text-violet text-[12px]">★</span>
+                <span class="text-espresso text-[12px]">★</span>
                 {product.rating}
               </span>
             )}
@@ -126,7 +128,8 @@ const variantClasses = isFeatured
     </div>
 
     <button
-      class="toggle-btn w-[32px] h-[32px] bg-[#1A1A1A] hover:bg-[#2A2A2A] border border-fracture flex items-center justify-center transition-all duration-400 shrink-0"
+      class="toggle-btn w-[32px] h-[32px] flex items-center justify-center transition-all duration-400 shrink-0"
+      style="background: #0D0D0D; border: 1px solid #3E3C3A;"
       aria-label={`Toggle details for ${product.title}`}
       aria-expanded="false"
     >
@@ -136,21 +139,21 @@ const variantClasses = isFeatured
         stroke="currentColor"
         viewBox="0 0 24 24"
       >
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path>
       </svg>
     </button>
   </div>
 
-  <div class="glass-accordion border-t border-fracture bg-[#1A1A1A]">
+  <div class="glass-accordion" style="border-top: 1px solid #3E3C3A; background: #0D0D0D;">
     <div class="p-[24px] flex flex-col gap-[20px]">
-      <p class="text-[12px] font-mono text-ash leading-relaxed" style="border-left: 2px solid #5B2D8E; padding-left: 16px;">
-        <strong class="text-bone block mb-[4px] text-[10px] tracking-[0.15em] uppercase font-mono">Catatan:</strong>
+      <p class="text-[12px] font-mono text-ash leading-relaxed" style="border-left: 2px solid #4A2E1A; padding-left: 16px;">
+        <strong class="text-bone block mb-[4px] text-[10px] tracking-[0.18em] uppercase font-mono">Catatan</strong>
         {product.description}
       </p>
 
       <div class="flex flex-col gap-[12px]">
         <span class="text-[9px] font-mono text-ash tracking-[0.2em] uppercase">
-          Tersedia di:
+          Tersedia di
         </span>
         <div class="flex gap-[12px] flex-wrap">
           {product.links.map((link) => {
@@ -158,8 +161,10 @@ const variantClasses = isFeatured
             return (
               <a
                 href={link.href}
-                class="flex items-center gap-[8px] bg-[#0D0D0D] border border-fracture hover:border-violetlight transition-all duration-400 px-[12px] py-[6px]"
-                style="border-radius: 0;"
+                class="flex items-center gap-[8px] transition-all duration-400"
+                style="border: 1px solid #3E3C3A; padding: 8px 14px; background: #1A1A1A;"
+                onmouseover="this.style.borderColor='#7A4A2A'"
+                onmouseout="this.style.borderColor='#3E3C3A'"
               >
                 {logo && (
                   <img
@@ -168,10 +173,10 @@ const variantClasses = isFeatured
                     class="w-[14px] h-[14px] object-contain"
                   />
                 )}
-                <span class="text-[11px] font-mono text-ash hover:text-bone transition-colors duration-400">
+                <span class="text-[11px] font-mono text-ash" style="transition: color 0.3s;">
                   {link.label.replace(/ACCESS \/\//, "").trim()}
                 </span>
-                <span class="text-ash text-[10px] ml-[4px]">↗</span>
+                <span class="text-espresso text-[10px] ml-[4px]">↗</span>
               </a>
             );
           })}
