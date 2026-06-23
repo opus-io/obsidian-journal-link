@@ -1,0 +1,41 @@
+---
+let siteName = "@obsidian.journal";
+let tagline = "Depth. Discipline. Distance.";
+let avatarUrl = "";
+
+try {
+  const config = await import("../../content/config.json", { assert: { type: "json" } });
+  const cfg = (config as any).default || config;
+  if (cfg.siteName) siteName = cfg.siteName;
+  if (cfg.tagline) tagline = cfg.tagline;
+  if (cfg.avatarUrl) avatarUrl = cfg.avatarUrl;
+} catch {}
+---
+
+<header class="relative z-10">
+  <div class="flex items-center gap-[24px]">
+    <figure
+      class="w-[80px] h-[80px] overflow-hidden shrink-0 border border-fracture bg-slate relative"
+    >
+      <div class="absolute top-0 left-0 w-[8px] h-[8px] border-t border-l border-violet opacity-40 pointer-events-none"></div>
+      <div class="absolute bottom-0 right-0 w-[8px] h-[8px] border-b border-r border-violet opacity-40 pointer-events-none"></div>
+      <img
+        src={avatarUrl || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Crect fill='%232A2A2A' width='80' height='80'/%3E%3Ctext x='40' y='48' text-anchor='middle' fill='%236B6860' font-family='monospace' font-size='20'%3EOJ%3C/text%3E%3C/svg%3E"}
+        alt={`Profile avatar for ${siteName}`}
+        loading="lazy"
+        decoding="async"
+        class="w-full h-full object-cover"
+      />
+    </figure>
+    <div>
+      <h1
+        class="text-[28px] font-display font-light tracking-[0.06em] text-bone leading-none"
+      >
+        {siteName}
+      </h1>
+      <p class="text-[12px] font-mono text-ash mt-[10px] leading-snug tracking-[0.15em] uppercase">
+        {tagline}
+      </p>
+    </div>
+  </div>
+</header>

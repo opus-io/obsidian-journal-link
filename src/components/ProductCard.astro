@@ -1,0 +1,241 @@
+---
+import { logoMap } from "../data/products";
+
+interface Props {
+  product: Product;
+  index?: number;
+}
+
+const { product, index = 0 } = Astro.props;
+
+const isFeatured = product.variant === "featured";
+const delay = index * 100 + 200;
+
+function formatSold(val?: number): string {
+  if (!val) return "";
+  if (val >= 1000) return (val / 1000).toFixed(0) + "rb";
+  return val.toString();
+}
+
+function getPlatformLogo(tag: string): string {
+  return logoMap[tag.toUpperCase()] || "";
+}
+
+function getLogoForLink(label: string): { logo: string; tag: string } {
+  const upper = label.toUpperCase();
+  for (const tag of product.tags) {
+    if (upper.includes(tag)) {
+      return { logo: getPlatformLogo(tag), tag };
+    }
+  }
+  return { logo: "", tag: "" };
+}
+
+const variantClasses = isFeatured
+  ? "border-violet card-featured-glow"
+  : "border-fracture hover:border-border-secondary";
+---
+
+<div
+  class={`product-card relative bg-slate overflow-hidden transition-all duration-400 group corner-accent ${variantClasses}`}
+  style="border-radius: 2px; animation-delay: ${delay}ms"
+  data-url={product.defaultUrl}
+  role="article"
+  aria-label={`Product: ${product.title}`}
+>
+  {isFeatured && (
+    <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(circle at 50% 0%, rgba(91,45,142,0.06) 0%, transparent 70%);"></div>
+  )}
+
+  <div
+    class="absolute top-0 right-0 bg-[#1A1A1A] border-b border-l border-fracture px-[10px] py-[4px] z-20"
+  >
+    <span class="font-mono text-[8px] text-ash tracking-[0.15em] uppercase">ID:{product.id}</span>
+  </div>
+
+  <div class="p-[24px] flex items-center justify-between gap-[12px] relative z-10">
+    <div class="fast-lane flex items-center gap-[16px] flex-1 cursor-pointer group/fast">
+      <div class="relative overflow-hidden transition-all duration-400 group-hover/fast:border-violetlight" style="border: 1px solid #3E3C3A;">
+        <img
+          src={product.image}
+          alt={product.imageAlt}
+          loading="lazy"
+          decoding="async"
+          class="w-[56px] h-[56px] object-cover transition-all duration-400 group-hover/fast:opacity-90"
+        />
+      </div>
+      <div class="flex-1 min-w-0">
+        {
+          product.featured ? (
+            <span class="text-[8px] font-mono text-violet tracking-[0.18em] uppercase mb-[4px] block">
+              {product.badge}
+            </span>
+          ) : (
+            <span class="text-[8px] font-mono text-ash uppercase tracking-[0.18em] mb-[4px] block">
+              {product.badge}
+            </span>
+          )
+        }
+        <h2 class="text-[16px] font-display font-light leading-tight text-bone transition-colors duration-400 group-hover/fast:text-violetlight">
+          {product.title}
+        </h2>
+
+        {(product.rating || product.sold) && (
+          <div class="flex items-center gap-[8px] mt-[6px]">
+            {product.rating && (
+              <span class="flex items-center gap-[2px] text-[11px] text-ash">
+                <span class="text-violet text-[12px]">★</span>
+                {product.rating}
+              </span>
+            )}
+            {product.sold && (
+              <span class="text-[11px] text-ash">
+                {formatSold(product.sold)} terjual
+              </span>
+            )}
+          </div>
+        )}
+
+        {product.shortDesc && (
+          <p class="text-[11px] font-mono text-ash mt-[6px] leading-snug line-clamp-1">
+            {product.shortDesc}
+          </p>
+        )}
+
+        {product.tags.length > 0 && (
+          <div class="flex gap-[6px] mt-[8px] flex-wrap">
+            {product.tags.map((tag) => {
+              const logoPath = getPlatformLogo(tag);
+              return (
+                <span class="tag-label">
+                  {logoPath && (
+                    <img
+                      src={logoPath}
+                      alt=""
+                      class="w-[10px] h-[10px] object-contain"
+                      loading="lazy"
+                    />
+                  )}
+                  {tag}
+                </span>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </div>
+
+    <button
+      class="toggle-btn w-[32px] h-[32px] bg-[#1A1A1A] hover:bg-[#2A2A2A] border border-fracture flex items-center justify-center transition-all duration-400 shrink-0"
+      aria-label={`Toggle details for ${product.title}`}
+      aria-expanded="false"
+    >
+      <svg
+        class="w-[14px] h-[14px] text-ash transform transition-transform duration-400 arrow-icon"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+      </svg>
+    </button>
+  </div>
+
+  <div class="glass-accordion border-t border-fracture bg-[#1A1A1A]">
+    <div class="p-[24px] flex flex-col gap-[20px]">
+      <p class="text-[12px] font-mono text-ash leading-relaxed" style="border-left: 2px solid #5B2D8E; padding-left: 16px;">
+        <strong class="text-bone block mb-[4px] text-[10px] tracking-[0.15em] uppercase font-mono">Catatan:</strong>
+        {product.description}
+      </p>
+
+      <div class="flex flex-col gap-[12px]">
+        <span class="text-[9px] font-mono text-ash tracking-[0.2em] uppercase">
+          Tersedia di:
+        </span>
+        <div class="flex gap-[12px] flex-wrap">
+          {product.links.map((link) => {
+            const { logo, tag } = getLogoForLink(link.label);
+            return (
+              <a
+                href={link.href}
+                class="flex items-center gap-[8px] bg-[#0D0D0D] border border-fracture hover:border-violetlight transition-all duration-400 px-[12px] py-[6px]"
+                style="border-radius: 0;"
+              >
+                {logo && (
+                  <img
+                    src={logo}
+                    alt={tag}
+                    class="w-[14px] h-[14px] object-contain"
+                  />
+                )}
+                <span class="text-[11px] font-mono text-ash hover:text-bone transition-colors duration-400">
+                  {link.label.replace(/ACCESS \/\//, "").trim()}
+                </span>
+                <span class="text-ash text-[10px] ml-[4px]">↗</span>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function initProductCard() {
+    const cards = document.querySelectorAll(".product-card");
+    
+    cards.forEach((card) => {
+      const fastLane = card.querySelector(".fast-lane");
+      const toggleBtn = card.querySelector(".toggle-btn");
+      const accordion = card.querySelector(".glass-accordion");
+      const arrow = card.querySelector(".arrow-icon");
+      const defaultUrl = card.getAttribute("data-url");
+
+      if (!fastLane || !toggleBtn || !accordion || !arrow || !defaultUrl) return;
+
+      const handleFastLaneClick = () => {
+        if (!card.classList.contains("is-open")) {
+          window.open(defaultUrl, "_blank", "noopener,noreferrer");
+        }
+      };
+
+      const handleToggleClick = (e) => {
+        e.stopPropagation();
+        if (card.classList.contains("is-open")) {
+          card.classList.remove("is-open");
+          accordion.style.maxHeight = "0px";
+          arrow.classList.remove("rotate-180");
+          toggleBtn.setAttribute("aria-expanded", "false");
+        } else {
+          card.classList.add("is-open");
+          accordion.style.maxHeight = accordion.scrollHeight + "px";
+          arrow.classList.add("rotate-180");
+          toggleBtn.setAttribute("aria-expanded", "true");
+        }
+      };
+
+      fastLane.addEventListener("click", handleFastLaneClick);
+      toggleBtn.addEventListener("click", handleToggleClick);
+
+      const cleanup = () => {
+        fastLane.removeEventListener("click", handleFastLaneClick);
+        toggleBtn.removeEventListener("click", handleToggleClick);
+      };
+
+      card._cleanup = cleanup;
+    });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initProductCard);
+  } else {
+    initProductCard();
+  }
+
+  document.addEventListener("astro:before-swap", () => {
+    document.querySelectorAll(".product-card").forEach((card) => {
+      if (card._cleanup) card._cleanup();
+    });
+  });
+</script>

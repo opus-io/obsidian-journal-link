@@ -1,0 +1,72 @@
+---
+let diagnosticLines: string[] = [];
+let diagnosticTags = [
+  "VOL.01 // ENTRADA",
+];
+let tagInterval = 5000;
+try {
+  const config = await import("../../content/config.json", { assert: { type: "json" } });
+  const cfg = config.default || config;
+  if (cfg.diagnosticLines) diagnosticLines = cfg.diagnosticLines;
+  if (cfg.diagnosticTags) diagnosticTags = cfg.diagnosticTags;
+  if (cfg.tagInterval) tagInterval = cfg.tagInterval;
+} catch {}
+
+const linesJson = JSON.stringify(diagnosticLines);
+const tagsJson = JSON.stringify(diagnosticTags);
+---
+
+<div
+  class="absolute top-0 left-0 w-full h-[34vh] z-0 overflow-hidden"
+  style="background-color: #1A1A1A; border-bottom: 1px solid #3E3C3A;"
+  aria-hidden="true"
+  data-lines={linesJson}
+  data-tags={tagsJson}
+  data-interval={tagInterval}
+>
+  <div class="absolute inset-0 flex flex-col items-center justify-center px-[28px]">
+    <div class="font-mono text-[11px] text-ash tracking-[0.2em] uppercase opacity-0" id="diagTag">
+      VOL.01 // ENTRADA
+    </div>
+  </div>
+  <div
+    class="absolute bottom-0 left-0 w-full h-[60%] pointer-events-none"
+    style="background: linear-gradient(to bottom, transparent, #0D0D0D);"
+    aria-hidden="true"
+  >
+  </div>
+</div>
+
+<script>
+  function init() {
+    var tagEl = document.getElementById('diagTag');
+    if (!tagEl) return;
+
+    setTimeout(function() {
+      tagEl.style.transition = 'opacity 0.8s ease';
+      tagEl.style.opacity = '1';
+    }, 300);
+
+    var container = document.querySelector('[data-tags]');
+    if (container) {
+      var tags = JSON.parse(container.getAttribute('data-tags'));
+      var interval = parseInt(container.getAttribute('data-interval'), 10) || 5000;
+      if (tags && tags.length > 1) {
+        var idx = 0;
+        setInterval(function() {
+          idx = (idx + 1) % tags.length;
+          tagEl.style.opacity = '0';
+          setTimeout(function() {
+            tagEl.textContent = tags[idx];
+            tagEl.style.opacity = '1';
+          }, 400);
+        }, interval);
+      }
+    }
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+</script>
