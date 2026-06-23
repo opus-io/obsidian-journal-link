@@ -18,22 +18,22 @@ const tagsJson = JSON.stringify(diagnosticTags);
 
 <div
   class="absolute top-0 left-0 w-full h-[34vh] z-0 overflow-hidden"
-  style="background: #0D0D0D; border-bottom: 1px solid #3E3C3A;"
+  style="background: linear-gradient(135deg, #1A1A1A 0%, #201030 50%, #1A1A1A 100%); border-bottom: 1px solid rgba(124,58,237,0.15);"
   aria-hidden="true"
   data-lines={linesJson}
   data-tags={tagsJson}
   data-interval={tagInterval}
 >
-  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse at 50% 100%, rgba(74,46,26,0.12) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(232,227,220,0.02) 0%, transparent 40%);"></div>
-  <div class="absolute inset-0 flex flex-col items-center justify-center px-[28px]">
-    <div class="font-mono text-[11px] text-ash tracking-[0.22em] uppercase opacity-0" id="diagTag">
+  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse at 50% 100%, rgba(124,58,237,0.08) 0%, transparent 60%), radial-gradient(ellipse at 30% 20%, rgba(139,92,246,0.04) 0%, transparent 40%);"></div>
+  <div class="absolute bottom-0 left-0 w-full h-[1px] pointer-events-none" style="background: linear-gradient(90deg, transparent, rgba(124,58,237,0.3), transparent);"></div>
+  <div class="absolute inset-0 flex flex-col items-center justify-center px-[24px]">
+    <div class="text-[12px] font-sans tracking-[0.18em] uppercase text-soft opacity-0" id="diagTag">
       VOL.01 // ENTRADA
     </div>
   </div>
   <div
     class="absolute bottom-0 left-0 w-full h-[60%] pointer-events-none"
-    style="background: linear-gradient(to bottom, transparent, #0D0D0D);"
-    aria-hidden="true"
+    style="background: linear-gradient(to bottom, transparent, #1A1A1A);"
   >
   </div>
 </div>
@@ -42,12 +42,10 @@ const tagsJson = JSON.stringify(diagnosticTags);
   function init() {
     var tagEl = document.getElementById('diagTag');
     if (!tagEl) return;
-
     setTimeout(function() {
-      tagEl.style.transition = 'opacity 1s ease';
+      tagEl.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
       tagEl.style.opacity = '1';
-    }, 400);
-
+    }, 300);
     var container = document.querySelector('[data-tags]');
     if (container) {
       var tags = JSON.parse(container.getAttribute('data-tags'));

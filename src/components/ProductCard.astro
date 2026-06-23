@@ -9,7 +9,7 @@ interface Props {
 const { product, index = 0 } = Astro.props;
 
 const isFeatured = product.variant === "featured";
-const delay = index * 100 + 200;
+const delay = index * 100 + 150;
 
 function formatSold(val?: number): string {
   if (!val) return "";
@@ -30,68 +30,58 @@ function getLogoForLink(label: string): { logo: string; tag: string } {
   }
   return { logo: "", tag: "" };
 }
-
-const variantClasses = isFeatured
-  ? "card-featured-glow"
-  : "card-base";
 ---
 
 <div
-  class={`product-card relative overflow-hidden transition-all duration-400 group corner-accent ${variantClasses}`}
-  style="background: #1A1A1A; animation-delay: ${delay}ms;"
+  class={`product-card glass-card rounded-[16px] overflow-hidden group card-entrance ${isFeatured ? 'glow-border' : ''}`}
+  style="animation-delay: ${delay}ms;"
   data-url={product.defaultUrl}
   role="article"
   aria-label={`Product: ${product.title}`}
 >
   {isFeatured && (
-    <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse at 50% 0%, rgba(74,46,26,0.08) 0%, transparent 70%);"></div>
+    <div class="absolute top-0 left-0 w-full h-[1px] pointer-events-none" style="background: linear-gradient(90deg, transparent, rgba(124,58,237,0.4), transparent);"></div>
   )}
 
-  <div
-    class="absolute top-0 right-0 bg-[#0D0D0D] z-20"
-    style="border-bottom: 1px solid #3E3C3A; border-left: 1px solid #3E3C3A; padding: 6px 12px;"
-  >
-    <span class="font-mono text-[8px] text-ash tracking-[0.18em] uppercase">ID:{product.id}</span>
-  </div>
-
-  <div class="p-[24px] flex items-center justify-between gap-[12px] relative z-10">
-    <div class="fast-lane flex items-center gap-[16px] flex-1 cursor-pointer group/fast">
-      <div class="relative overflow-hidden transition-all duration-400" style="border: 1px solid #3E3C3A;">
+  <div class="p-[20px] flex items-center justify-between gap-[12px] relative z-10">
+    <div class="fast-lane flex items-center gap-[14px] flex-1 cursor-pointer group/fast">
+      <div class="relative rounded-[12px] overflow-hidden transition-all duration-400" style="border: 1px solid rgba(51,51,51,0.4); box-shadow: 0 0 0 1px rgba(124,58,237,0) ; transition: box-shadow 0.3s;">
         <img
           src={product.image}
           alt={product.imageAlt}
           loading="lazy"
           decoding="async"
-          class="w-[56px] h-[56px] object-cover transition-all duration-400 group-hover/fast:opacity-80"
+          class="w-[56px] h-[56px] object-cover transition-all duration-400 group-hover/fast:scale-[1.05]"
         />
       </div>
       <div class="flex-1 min-w-0">
-        {
-          product.featured ? (
-            <span class="text-[8px] font-mono text-espresso tracking-[0.18em] uppercase mb-[4px] block flex items-center gap-1">
-              <span class="w-1 h-1 bg-espresso inline-block"></span>
+        <div class="flex items-center gap-[8px] mb-[4px]">
+          {product.featured && (
+            <span class="text-[9px] font-sans font-semibold tracking-[0.08em] uppercase gradient-text">
               {product.badge}
             </span>
-          ) : (
-            <span class="text-[8px] font-mono text-ash uppercase tracking-[0.18em] mb-[4px] block">
+          )}
+          {!product.featured && (
+            <span class="text-[9px] font-sans text-soft uppercase tracking-[0.08em]">
               {product.badge}
             </span>
-          )
-        }
-        <h2 class="text-[16px] font-display font-light leading-tight text-bone transition-colors duration-400 group-hover/fast:text-leather">
+          )}
+          <span class="text-[8px] font-sans text-soft/50">ID:{product.id}</span>
+        </div>
+        <h2 class="text-[16px] font-sans font-semibold text-pure leading-tight transition-colors duration-300 group-hover/fast:text-violets">
           {product.title}
         </h2>
 
         {(product.rating || product.sold) && (
-          <div class="flex items-center gap-[8px] mt-[6px]">
+          <div class="flex items-center gap-[8px] mt-[5px]">
             {product.rating && (
-              <span class="flex items-center gap-[2px] text-[11px] text-ash">
-                <span class="text-espresso text-[12px]">★</span>
+              <span class="flex items-center gap-[2px] text-[11px] text-soft">
+                <span class="text-violet text-[12px]">★</span>
                 {product.rating}
               </span>
             )}
             {product.sold && (
-              <span class="text-[11px] text-ash">
+              <span class="text-[11px] text-soft">
                 {formatSold(product.sold)} terjual
               </span>
             )}
@@ -99,7 +89,7 @@ const variantClasses = isFeatured
         )}
 
         {product.shortDesc && (
-          <p class="text-[11px] font-mono text-ash mt-[6px] leading-snug line-clamp-1">
+          <p class="text-[12px] font-sans text-soft mt-[4px] leading-snug line-clamp-1">
             {product.shortDesc}
           </p>
         )}
@@ -109,14 +99,9 @@ const variantClasses = isFeatured
             {product.tags.map((tag) => {
               const logoPath = getPlatformLogo(tag);
               return (
-                <span class="tag-label">
+                <span class="inline-flex items-center gap-1.5 px-[8px] py-[3px] text-[9px] font-sans tracking-[0.08em] uppercase text-soft rounded-[6px]" style="background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.12);">
                   {logoPath && (
-                    <img
-                      src={logoPath}
-                      alt=""
-                      class="w-[10px] h-[10px] object-contain"
-                      loading="lazy"
-                    />
+                    <img src={logoPath} alt="" class="w-[11px] h-[11px] object-contain" loading="lazy" />
                   )}
                   {tag}
                 </span>
@@ -128,55 +113,42 @@ const variantClasses = isFeatured
     </div>
 
     <button
-      class="toggle-btn w-[32px] h-[32px] flex items-center justify-center transition-all duration-400 shrink-0"
-      style="background: #0D0D0D; border: 1px solid #3E3C3A;"
+      class="toggle-btn w-[32px] h-[32px] rounded-[8px] flex items-center justify-center transition-all duration-300 shrink-0"
+      style="background: rgba(124,58,237,0.08); border: 1px solid rgba(124,58,237,0.15);"
       aria-label={`Toggle details for ${product.title}`}
       aria-expanded="false"
     >
-      <svg
-        class="w-[14px] h-[14px] text-ash transform transition-transform duration-400 arrow-icon"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 9l-7 7-7-7"></path>
+      <svg class="w-[14px] h-[14px] text-violet transform transition-transform duration-300 arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7"></path>
       </svg>
     </button>
   </div>
 
-  <div class="glass-accordion" style="border-top: 1px solid #3E3C3A; background: #0D0D0D;">
-    <div class="p-[24px] flex flex-col gap-[20px]">
-      <p class="text-[12px] font-mono text-ash leading-relaxed" style="border-left: 2px solid #4A2E1A; padding-left: 16px;">
-        <strong class="text-bone block mb-[4px] text-[10px] tracking-[0.18em] uppercase font-mono">Catatan</strong>
+  <div class="accordion-body" style="border-top: 1px solid rgba(51,51,51,0.3);">
+    <div class="p-[20px] flex flex-col gap-[16px]">
+      <p class="text-[12px] font-sans text-soft leading-relaxed" style="border-left: 2px solid rgba(124,58,237,0.3); padding-left: 14px;">
+        <strong class="text-pure block mb-[2px] text-[10px] uppercase tracking-[0.1em]">Catatan</strong>
         {product.description}
       </p>
 
-      <div class="flex flex-col gap-[12px]">
-        <span class="text-[9px] font-mono text-ash tracking-[0.2em] uppercase">
+      <div class="flex flex-col gap-[10px]">
+        <span class="text-[9px] font-sans text-soft uppercase tracking-[0.15em]">
           Tersedia di
         </span>
-        <div class="flex gap-[12px] flex-wrap">
+        <div class="flex gap-[10px] flex-wrap">
           {product.links.map((link) => {
             const { logo, tag } = getLogoForLink(link.label);
             return (
               <a
                 href={link.href}
-                class="flex items-center gap-[8px] transition-all duration-400"
-                style="border: 1px solid #3E3C3A; padding: 8px 14px; background: #1A1A1A;"
-                onmouseover="this.style.borderColor='#7A4A2A'"
-                onmouseout="this.style.borderColor='#3E3C3A'"
+                class="flex items-center gap-[8px] px-[12px] py-[7px] rounded-[8px] transition-all duration-300 text-[11px] font-sans"
+                style="background: rgba(124,58,237,0.06); border: 1px solid rgba(124,58,237,0.12); color: #888888;"
+                onmouseover="this.style.borderColor='rgba(139,92,246,0.3)'; this.style.color='#F5F5F5'"
+                onmouseout="this.style.borderColor='rgba(124,58,237,0.12)'; this.style.color='#888888'"
               >
-                {logo && (
-                  <img
-                    src={logo}
-                    alt={tag}
-                    class="w-[14px] h-[14px] object-contain"
-                  />
-                )}
-                <span class="text-[11px] font-mono text-ash" style="transition: color 0.3s;">
-                  {link.label.replace(/ACCESS \/\//, "").trim()}
-                </span>
-                <span class="text-espresso text-[10px] ml-[4px]">↗</span>
+                {logo && <img src={logo} alt={tag} class="w-[14px] h-[14px] object-contain" />}
+                {link.label.replace(/ACCESS \/\//, "").trim()}
+                <span class="text-violet text-[10px]">↗</span>
               </a>
             );
           })}
@@ -189,22 +161,16 @@ const variantClasses = isFeatured
 <script>
   function initProductCard() {
     const cards = document.querySelectorAll(".product-card");
-    
     cards.forEach((card) => {
       const fastLane = card.querySelector(".fast-lane");
       const toggleBtn = card.querySelector(".toggle-btn");
-      const accordion = card.querySelector(".glass-accordion");
+      const accordion = card.querySelector(".accordion-body");
       const arrow = card.querySelector(".arrow-icon");
       const defaultUrl = card.getAttribute("data-url");
-
       if (!fastLane || !toggleBtn || !accordion || !arrow || !defaultUrl) return;
-
       const handleFastLaneClick = () => {
-        if (!card.classList.contains("is-open")) {
-          window.open(defaultUrl, "_blank", "noopener,noreferrer");
-        }
+        if (!card.classList.contains("is-open")) window.open(defaultUrl, "_blank", "noopener,noreferrer");
       };
-
       const handleToggleClick = (e) => {
         e.stopPropagation();
         if (card.classList.contains("is-open")) {
@@ -219,28 +185,17 @@ const variantClasses = isFeatured
           toggleBtn.setAttribute("aria-expanded", "true");
         }
       };
-
       fastLane.addEventListener("click", handleFastLaneClick);
       toggleBtn.addEventListener("click", handleToggleClick);
-
-      const cleanup = () => {
+      card._cleanup = () => {
         fastLane.removeEventListener("click", handleFastLaneClick);
         toggleBtn.removeEventListener("click", handleToggleClick);
       };
-
-      card._cleanup = cleanup;
     });
   }
-
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initProductCard);
-  } else {
-    initProductCard();
-  }
-
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", initProductCard);
+  else initProductCard();
   document.addEventListener("astro:before-swap", () => {
-    document.querySelectorAll(".product-card").forEach((card) => {
-      if (card._cleanup) card._cleanup();
-    });
+    document.querySelectorAll(".product-card").forEach((card) => { if (card._cleanup) card._cleanup(); });
   });
 </script>

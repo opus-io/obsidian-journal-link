@@ -4,18 +4,18 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        display: ['"Cormorant Garamond"', '"EB Garamond"', "serif"],
-        mono: ['"IBM Plex Mono"', '"Courier Prime"', "monospace"],
+        sans: ['"Inter"', "system-ui", "sans-serif"],
       },
       colors: {
-        obsidian: "#0D0D0D",
-        slate: "#2A2A2A",
-        fracture: "#3E3C3A",
-        ash: "#6B6860",
-        bone: "#E8E3DC",
-        espresso: "#4A2E1A",
-        leather: "#7A4A2A",
-        gold: "#8C7B5E",
+        dark: "#1A1A1A",
+        surface: "#252525",
+        border: "#333333",
+        soft: "#888888",
+        pure: "#F5F5F5",
+        violet: "#7C3AED",
+        violets: "#8B5CF6",
+        glow: "rgba(124, 58, 237, 0.15)",
+        glows: "rgba(139, 92, 246, 0.25)",
       },
     },
   },
