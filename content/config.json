@@ -2,12 +2,14 @@
   "siteName": "@obsidian.journal",
   "tagline": "Depth. Discipline. Distance.",
   "avatarUrl": "",
-  "accentColor": "#7C3AED",
-  "bgPrimary": "#1A1A1A",
+  "accentColor": "#5B2D8E",
+  "bgPrimary": "#000000",
   "diagnosticLines": [],
-  "tagInterval": 5000,
+  "tagInterval": 6000,
   "diagnosticTags": [
-    "VOL.01 // ENTRADA"
+    "VOL.01 // ENTRADA",
+    "VOL.02 // PERSPEKTIF",
+    "VOL.03 // KEDALAMAN"
   ],
   "logos": {
     "SHOPEE": "",

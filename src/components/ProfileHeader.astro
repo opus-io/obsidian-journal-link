@@ -2,7 +2,6 @@
 let siteName = "@obsidian.journal";
 let tagline = "Depth. Discipline. Distance.";
 let avatarUrl = "";
-
 try {
   const config = await import("../../content/config.json", { assert: { type: "json" } });
   const cfg = (config as any).default || config;
@@ -11,28 +10,13 @@ try {
   if (cfg.avatarUrl) avatarUrl = cfg.avatarUrl;
 } catch {}
 ---
-
 <header class="relative z-10">
-  <div class="flex items-center gap-[20px] glass rounded-[16px] p-[16px]">
-    <figure
-      class="w-[72px] h-[72px] rounded-[12px] overflow-hidden shrink-0 relative"
-      style="border: 2px solid rgba(124,58,237,0.2); box-shadow: 0 0 20px rgba(124,58,237,0.08);"
-    >
-      <img
-        src={avatarUrl || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='72'%3E%3Crect fill='%23252525' width='72' height='72'/%3E%3Ctext x='36' y='44' text-anchor='middle' fill='%237C3AED' font-family='Inter' font-size='18' font-weight='600'%3EOJ%3C/text%3E%3C/svg%3E"}
-        alt={`Profile for ${siteName}`}
-        loading="lazy"
-        decoding="async"
-        class="w-full h-full object-cover rounded-[10px]"
-      />
-    </figure>
+  <div class="flex items-center gap-[16px] px-[20px]">
+    <img src={avatarUrl || "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Crect fill='%23030208' width='64' height='64'/%3E%3Ctext x='32' y='40' text-anchor='middle' fill='%235B21B6' font-family='Inter' font-size='16' font-weight='700'%3EOJ%3C/text%3E%3C/svg%3E"}
+      alt={`Profile for ${siteName}`} loading="lazy" decoding="async" class="w-[64px] h-[64px] shrink-0 object-cover" />
     <div>
-      <h1 class="text-[22px] font-sans font-semibold text-pure tracking-[-0.02em] leading-none">
-        {siteName}
-      </h1>
-      <p class="text-[12px] font-sans text-soft mt-[6px] tracking-[0.04em]">
-        {tagline}
-      </p>
+      <h1 class="text-[22px] font-[700] leading-none" style="color:var(--white); font-family:Inter,system-ui,sans-serif; letter-spacing:-0.02em;">@obsidian.journal</h1>
+      <p class="text-[11px] mt-[6px] tracking-[0.15em] uppercase" style="color:var(--muted); font-family:Inter,sans-serif;">Depth. Discipline. Distance.</p>
     </div>
   </div>
 </header>

@@ -4,18 +4,18 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Inter"', "system-ui", "sans-serif"],
+        sans: ["Inter", "system-ui", "sans-serif"],
+        display: ["Inter", "system-ui", "sans-serif"],
+        mono: ["'JetBrains Mono'", "'Fira Code'", "monospace"],
       },
       colors: {
-        dark: "#1A1A1A",
-        surface: "#252525",
-        border: "#333333",
-        soft: "#888888",
-        pure: "#F5F5F5",
-        violet: "#7C3AED",
-        violets: "#8B5CF6",
-        glow: "rgba(124, 58, 237, 0.15)",
-        glows: "rgba(139, 92, 246, 0.25)",
+        void: "#05040F",
+        space: "#0A0818",
+        nebula: "#120D2E",
+        cosmic: "#6B21E8",
+        glow: "#9B59F5",
+        stardust: "#C084FC",
+        muted: "#A89BC2",
       },
     },
   },

@@ -1,98 +1,87 @@
 :root {
-  --bg: #1A1A1A;
-  --surface: #252525;
-  --surface2: #2E2E2E;
-  --border: #333333;
-  --text: #F5F5F5;
-  --text2: #888888;
-  --accent: #7C3AED;
-  --accent2: #8B5CF6;
-  --glow: rgba(124, 58, 237, 0.15);
-  --glow2: rgba(139, 92, 246, 0.25);
-
-  --font: "Inter", system-ui, sans-serif;
-  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --bg: #030208;
+  --surface: #060312;
+  --nebula: #060315;
+  --cosmic: #5B21B6;
+  --glow: #7C3AED;
+  --stardust: #A855F7;
+  --white: #FFFFFF;
+  --muted: #7A708A;
+  --ease: cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 
 body {
-  font-family: var(--font);
+  font-family: "Inter", sans-serif;
   background: var(--bg);
-  color: var(--text);
+  color: var(--muted);
+  line-height: 1.7;
 }
 
-.glass {
-  background: rgba(37, 37, 37, 0.7);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(51, 51, 51, 0.5);
+::selection {
+  background: rgba(107, 33, 232, 0.35);
+  color: #fff;
 }
 
-.glass-card {
-  background: rgba(37, 37, 37, 0.65);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(51, 51, 51, 0.4);
-  transition: all 0.4s var(--ease);
+/* Cards — 0 borders */
+.card {
+  background: var(--nebula);
+  border-radius: 0;
+  transition: box-shadow 0.4s var(--ease);
+}
+.card:hover {
+  box-shadow: 0 0 24px rgba(91, 33, 182, 0.12);
 }
 
-.glass-card:hover {
-  border-color: rgba(124, 58, 237, 0.3);
-  box-shadow: 0 0 30px rgba(124, 58, 237, 0.08);
+.card-featured {
+  background: rgba(18, 13, 46, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
 }
 
-.glow-border {
-  box-shadow:
-    0 0 0 1px rgba(124, 58, 237, 0.2),
-    0 0 20px rgba(124, 58, 237, 0.06);
+.cardIn {
+  animation: cardIn 0.4s var(--ease) both;
 }
-
-.glow-text {
-  text-shadow: 0 0 20px rgba(124, 58, 237, 0.3);
-}
-
-.gradient-bar {
-  background: linear-gradient(90deg, var(--accent), var(--accent2));
-}
-
-.gradient-text {
-  background: linear-gradient(135deg, var(--accent), var(--accent2));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.card-entrance {
-  animation: cardIn 0.5s var(--ease) both;
-}
-
 @keyframes cardIn {
-  from { opacity: 0; transform: translateY(16px); }
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(8px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 20px rgba(124, 58, 237, 0.05); }
-  50% { box-shadow: 0 0 30px rgba(124, 58, 237, 0.15); }
 }
 
 .accordion-body {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.4s var(--ease), opacity 0.3s ease;
-  opacity: 0;
+  transition: max-height 0.3s var(--ease);
 }
 .is-open .accordion-body {
-  opacity: 1;
+  max-height: none;
 }
 
-::-webkit-scrollbar { width: 4px; }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--muted);
+  background: rgba(91, 33, 182, 0.06);
+}
+
+.id-badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: #5B21B6;
+  letter-spacing: 0.04em;
+}
+
+.separator {
+  height: 1px;
+  background: rgba(91, 33, 182, 0.10);
+}
+
+::-webkit-scrollbar { width: 3px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+::-webkit-scrollbar-thumb { background: var(--nebula); }
 
 * { -webkit-tap-highlight-color: transparent; }
 

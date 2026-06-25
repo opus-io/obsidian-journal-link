@@ -1,71 +1,122 @@
 ---
-let diagnosticLines: string[] = [];
-let diagnosticTags = [
-  "VOL.01 // ENTRADA",
-];
-let tagInterval = 5000;
-try {
-  const config = await import("../../content/config.json", { assert: { type: "json" } });
-  const cfg = config.default || config;
-  if (cfg.diagnosticLines) diagnosticLines = cfg.diagnosticLines;
-  if (cfg.diagnosticTags) diagnosticTags = cfg.diagnosticTags;
-  if (cfg.tagInterval) tagInterval = cfg.tagInterval;
-} catch {}
-
-const linesJson = JSON.stringify(diagnosticLines);
-const tagsJson = JSON.stringify(diagnosticTags);
 ---
 
-<div
-  class="absolute top-0 left-0 w-full h-[34vh] z-0 overflow-hidden"
-  style="background: linear-gradient(135deg, #1A1A1A 0%, #201030 50%, #1A1A1A 100%); border-bottom: 1px solid rgba(124,58,237,0.15);"
-  aria-hidden="true"
-  data-lines={linesJson}
-  data-tags={tagsJson}
-  data-interval={tagInterval}
->
-  <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse at 50% 100%, rgba(124,58,237,0.08) 0%, transparent 60%), radial-gradient(ellipse at 30% 20%, rgba(139,92,246,0.04) 0%, transparent 40%);"></div>
-  <div class="absolute bottom-0 left-0 w-full h-[1px] pointer-events-none" style="background: linear-gradient(90deg, transparent, rgba(124,58,237,0.3), transparent);"></div>
-  <div class="absolute inset-0 flex flex-col items-center justify-center px-[24px]">
-    <div class="text-[12px] font-sans tracking-[0.18em] uppercase text-soft opacity-0" id="diagTag">
-      VOL.01 // ENTRADA
-    </div>
+<div class="absolute top-0 left-0 w-full h-[34vh] z-0 overflow-hidden"
+  style="background:#030208;">
+  <!-- Animated radial glow — pulse cosmic breathing -->
+  <div class="absolute inset-0 pointer-events-none animate-glow"
+    style="background:radial-gradient(ellipse at 50% 55%, rgba(91,33,182,0.3) 0%, rgba(124,58,237,0.10) 30%, transparent 65%);">
   </div>
-  <div
-    class="absolute bottom-0 left-0 w-full h-[60%] pointer-events-none"
-    style="background: linear-gradient(to bottom, transparent, #1A1A1A);"
-  >
+  <div class="absolute bottom-0 left-0 w-full h-[50%] pointer-events-none"
+    style="background:linear-gradient(to bottom, transparent, #030208);">
   </div>
+
+  <canvas id="starCanvas" class="absolute inset-0 pointer-events-none"></canvas>
 </div>
 
+<style is:global>
+@keyframes glowBreath {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 1; }
+}
+.animate-glow {
+  animation: glowBreath 5s ease-in-out infinite;
+}
+</style>
+
 <script>
-  function init() {
-    var tagEl = document.getElementById('diagTag');
-    if (!tagEl) return;
-    setTimeout(function() {
-      tagEl.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
-      tagEl.style.opacity = '1';
-    }, 300);
-    var container = document.querySelector('[data-tags]');
-    if (container) {
-      var tags = JSON.parse(container.getAttribute('data-tags'));
-      var interval = parseInt(container.getAttribute('data-interval'), 10) || 5000;
-      if (tags && tags.length > 1) {
-        var idx = 0;
-        setInterval(function() {
-          idx = (idx + 1) % tags.length;
-          tagEl.style.opacity = '0';
-          setTimeout(function() {
-            tagEl.textContent = tags[idx];
-            tagEl.style.opacity = '1';
-          }, 500);
-        }, interval);
-      }
+(function(){
+  var cv = document.getElementById('starCanvas');
+  if (!cv) return;
+
+  cv.style.position = 'fixed';
+  cv.style.top = '0';
+  cv.style.left = '0';
+  cv.style.width = '100%';
+  cv.style.height = '34vh';
+  cv.style.zIndex = '35';
+  cv.style.pointerEvents = 'none';
+
+  var cx = cv.getContext('2d');
+  if (!cx) return;
+
+  var W, H, rid;
+
+  function resize() {
+    W = window.innerWidth;
+    H = window.innerHeight * 0.34;
+    cv.width = W;
+    cv.height = H;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Star particles — dimmer, slower
+  var MAX = 100;
+  var stars = [];
+
+  for (var i = 0; i < MAX; i++) {
+    stars.push({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.04,
+      vy: -(0.03 + Math.random() * 0.08),
+      r: 0.3 + Math.random() * 0.8,
+      op: 0.012 + Math.random() * 0.03,
+      twinkle: Math.random() * Math.PI * 2,
+      twinkleSpeed: 0.004 + Math.random() * 0.012
+    });
+  }
+
+  function spawnStar() {
+    if (stars.length < MAX) {
+      stars.push({
+        x: Math.random() * W, y: H + 2,
+        vx: (Math.random() - 0.5) * 0.04,
+        vy: -(0.03 + Math.random() * 0.08),
+        r: 0.3 + Math.random() * 0.8,
+        op: 0.012 + Math.random() * 0.03,
+        twinkle: Math.random() * Math.PI * 2,
+        twinkleSpeed: 0.004 + Math.random() * 0.012
+      });
     }
   }
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", init);
-  } else {
-    init();
+  setInterval(spawnStar, 500);
+
+  function update() {
+    for (var i = stars.length - 1; i >= 0; i--) {
+      var s = stars[i];
+      s.twinkle += s.twinkleSpeed;
+      s.x += s.vx + Math.sin(s.twinkle) * 0.02;
+      s.y += s.vy;
+      if (s.y < -5 || s.x < -5 || s.x > W + 5) stars.splice(i, 1);
+    }
   }
+
+  function render() {
+    cx.clearRect(0, 0, W, H);
+    update();
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i];
+      var twinkle = 0.6 + 0.4 * Math.sin(s.twinkle);
+      cx.globalAlpha = s.op * twinkle;
+      cx.fillStyle = '#A855F7';
+      cx.beginPath();
+      cx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      cx.fill();
+    }
+    cx.globalAlpha = 1;
+    rid = requestAnimationFrame(render);
+  }
+  render();
+
+  cv._cleanup = function() {
+    window.removeEventListener('resize', resize);
+    if (rid) cancelAnimationFrame(rid);
+  };
+})();
+
+document.addEventListener('astro:before-swap', function() {
+  var c = document.getElementById('starCanvas');
+  if (c && c._cleanup) c._cleanup();
+});
 </script>

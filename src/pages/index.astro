@@ -5,65 +5,196 @@ import ProfileHeader from "../components/ProfileHeader.astro";
 import SectionHeading from "../components/SectionHeading.astro";
 import ProductCard from "../components/ProductCard.astro";
 import { products } from "../data/products";
-
 const sortedProducts = [...products].sort((a, b) => {
   if (a.featured && !b.featured) return -1;
   if (!a.featured && b.featured) return 1;
   return 0;
 });
 ---
-
-<BaseLayout title="@obsidian.journal — Depth. Discipline. Distance.">
+<BaseLayout title="@obsidian.journal">
+  <!-- Banner background + canvas -->
   <DiagnosticCanvas />
 
-  <div class="relative z-30 max-w-[520px] mx-auto w-full pt-[21vh] px-[20px]">
-    <ProfileHeader />
-
-    <SectionHeading title="Koleksi //" />
-
-    <div class="relative mb-[20px]">
-      <input
-        type="text"
-        id="searchInput"
-        placeholder="Cari produk..."
-        class="w-full px-[14px] py-[11px] rounded-[12px] font-sans text-[13px] outline-none transition-all duration-300"
-        style="background: rgba(37,37,37,0.6); border: 1px solid rgba(51,51,51,0.4); color: #F5F5F5;"
-        onfocus="this.style.borderColor='rgba(124,58,237,0.4)'; this.style.boxShadow='0 0 20px rgba(124,58,237,0.06)'"
-        onblur="this.style.borderColor='rgba(51,51,51,0.4)'; this.style.boxShadow='none'"
-      />
-      <svg class="absolute right-[14px] top-1/2 -translate-y-1/2 w-[16px] h-[16px] text-soft/60 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-      </svg>
+  <!-- TEKS BANNER - crossfade (z-40) -->
+  <div class="absolute top-0 left-0 w-full h-[34vh] z-40 pointer-events-none overflow-hidden">
+    <div class="absolute inset-0 flex items-center justify-center">
+      <div class="relative h-[34px] flex items-center justify-center">
+        <span id="tagA"
+          class="absolute transition-opacity duration-[800ms] ease-in-out"
+          style="font-family:Inter,system-ui,sans-serif; font-size:28px; font-weight:800; letter-spacing:-0.03em; color:#FFFFFF; text-shadow:0 0 30px rgba(91,33,182,0.2);">
+          VOL.01 // ENTRADA
+        </span>
+        <span id="tagB"
+          class="absolute transition-opacity duration-[800ms] ease-in-out opacity-0"
+          style="font-family:Inter,system-ui,sans-serif; font-size:28px; font-weight:800; letter-spacing:-0.03em; color:#FFFFFF; text-shadow:0 0 30px rgba(91,33,182,0.2);">
+        </span>
+      </div>
     </div>
+  </div>
 
-    <main class="flex flex-col gap-[14px]" id="productList">
-      {sortedProducts.map((product, index) => (
-        <ProductCard product={product} index={index} />
-      ))}
+  <!-- Full-page ambient canvas — particles rising bottom→top -->
+  <canvas id="riseCanvas" class="fixed inset-0 pointer-events-none" style="z-index:1;"></canvas>
+
+  <!-- Main content - z-index 30 -->
+  <div class="relative z-30 max-w-[520px] mx-auto w-full pt-[34vh] px-[20px]">
+    <ProfileHeader />
+    <div class="my-[14px] separator"></div>
+    <SectionHeading title="Koleksi //" />
+    <div class="relative mb-[16px]">
+      <input type="text" id="searchInput" placeholder="Cari produk..."
+        class="w-full px-[12px] py-[9px] text-[12px] outline-none"
+        style="background:var(--nebula); color:var(--muted); border:0; border-radius:0; font-family:Inter,sans-serif;"
+        onfocus="this.style.background='rgba(91,33,182,0.08)'" onblur="this.style.background='var(--nebula)'" />
+    </div>
+    <main class="flex flex-col gap-[10px]" id="productList">
+      {sortedProducts.map((product, index) => (<ProductCard product={product} index={index} />))}
     </main>
-
-    <p id="searchEmpty" class="text-center text-soft text-[13px] py-[48px] hidden">
-      Tidak ada produk yang cocok.
-    </p>
+    <p id="searchEmpty" class="text-center py-[48px] hidden" style="color:var(--muted); font-size:12px; font-family:Inter,sans-serif;">Tidak ada produk yang cocok.</p>
   </div>
 </BaseLayout>
 
 <script>
-  const searchInput = document.getElementById('searchInput');
-  const productList = document.getElementById('productList');
-  const emptyMsg = document.getElementById('searchEmpty');
-  if (searchInput && productList) {
-    searchInput.addEventListener('input', function() {
-      const q = this.value.toLowerCase().trim();
-      const cards = productList.querySelectorAll('.product-card');
-      let visibleCount = 0;
-      cards.forEach((card) => {
-        const text = card.textContent.toLowerCase();
-        const match = !q || text.includes(q);
-        card.style.display = match ? '' : 'none';
-        if (match) visibleCount++;
-      });
-      if (emptyMsg) emptyMsg.classList.toggle('hidden', visibleCount > 0 || !q);
+// Rising particles — full-page ambient, bottom→top
+(function(){
+  var cv = document.getElementById('riseCanvas');
+  if (!cv) return;
+  var cx = cv.getContext('2d');
+  if (!cx) return;
+  if (!cx) return;
+  var W, H, rid;
+  var MAX = 160;
+  var pts = [];
+
+  function resize() {
+    W = window.innerWidth;
+    H = window.innerHeight;
+    cv.width = W;
+    cv.height = H;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (var i = 0; i < MAX; i++) {
+    pts.push({
+      x: Math.random() * W, y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.05,
+      vy: -(0.06 + Math.random() * 0.14),
+      r: 0.5 + Math.random() * 1.0,
+      op: 0.03 + Math.random() * 0.05,
+      sway: Math.random() * Math.PI * 2,
+      swaySpeed: 0.006 + Math.random() * 0.012
     });
   }
+
+  function spawn() {
+    if (pts.length < MAX) {
+      pts.push({
+        x: Math.random() * W, y: H + 2,
+        vx: (Math.random() - 0.5) * 0.05,
+        vy: -(0.06 + Math.random() * 0.14),
+        r: 0.5 + Math.random() * 1.0,
+        op: 0.03 + Math.random() * 0.05,
+        sway: Math.random() * Math.PI * 2,
+        swaySpeed: 0.006 + Math.random() * 0.012
+      });
+    }
+  }
+  setInterval(spawn, 300);
+
+  function update() {
+    for (var i = pts.length - 1; i >= 0; i--) {
+      var p = pts[i];
+      p.sway += p.swaySpeed;
+      p.x += p.vx + Math.sin(p.sway) * 0.02;
+      p.y += p.vy;
+      if (p.y < -5 || p.x < -5 || p.x > W + 5) pts.splice(i, 1);
+    }
+  }
+
+  function render() {
+    cx.clearRect(0, 0, W, H);
+    update();
+    for (var i = 0; i < pts.length; i++) {
+      var p = pts[i];
+      cx.globalAlpha = p.op * 0.45;
+      cx.fillStyle = '#A855F7';
+      cx.beginPath();
+      cx.arc(p.x, p.y, p.r + 2, 0, Math.PI * 2);
+      cx.fill();
+      cx.globalAlpha = p.op;
+      cx.beginPath();
+      cx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      cx.fill();
+    }
+    cx.globalAlpha = 1;
+    rid = requestAnimationFrame(render);
+  }
+  render();
+
+  cv._cleanup = function() {
+    window.removeEventListener('resize', resize);
+    if (rid) cancelAnimationFrame(rid);
+  };
+})();
+
+// Tag crossfade — alternating between tagA and tagB
+(function(){
+  var A = document.getElementById('tagA');
+  var B = document.getElementById('tagB');
+  if (!A || !B) return;
+
+  var container = document.querySelector('[data-tags]');
+  var tags = container
+    ? JSON.parse(container.getAttribute('data-tags') || '["VOL.01 // ENTRADA"]')
+    : ['VOL.01 // ENTRADA', 'VOL.02 // PERSPEKTIF', 'VOL.03 // KEDALAMAN'];
+  var interval = parseInt(container ? container.getAttribute('data-interval') : '6000', 10) || 6000;
+
+  if (tags.length <= 1) return;
+
+  // Initialize: A shows tags[0], B shows tags[1] (hidden)
+  A.textContent = tags[0];
+  B.textContent = tags[1];
+  A.style.opacity = '1';
+  B.style.opacity = '0';
+
+  var shown = 0;
+  var showA = true;
+
+  setInterval(function(){
+    var next = (shown + 1) % tags.length;
+
+    if (showA) {
+      // A visible → fade A out, B in with next text
+      B.textContent = tags[next];
+      A.style.opacity = '0';
+      B.style.opacity = '1';
+    } else {
+      // B visible → fade B out, A in with next text
+      A.textContent = tags[next];
+      B.style.opacity = '0';
+      A.style.opacity = '1';
+    }
+
+    showA = !showA;
+    shown = next;
+  }, interval);
+})();
+
+// Search
+const si = document.getElementById('searchInput');
+const pl = document.getElementById('productList');
+const em = document.getElementById('searchEmpty');
+if (si && pl) {
+  si.addEventListener('input', function() {
+    const q = this.value.toLowerCase().trim();
+    const cards = pl.querySelectorAll('.product-card');
+    let v = 0;
+    cards.forEach(function(c) {
+      const m = !q || c.textContent.toLowerCase().includes(q);
+      c.style.display = m ? '' : 'none';
+      if (m) v++;
+    });
+    if (em) em.classList.toggle('hidden', v > 0 || !q);
+  });
+}
 </script>

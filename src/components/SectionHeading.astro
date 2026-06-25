@@ -4,11 +4,8 @@ interface Props {
 }
 const { title } = Astro.props;
 ---
-
-<div class="mb-[20px] flex items-center gap-[12px]">
-  <div class="h-[20px] w-[3px] rounded-full gradient-bar"></div>
-  <h3 class="text-[12px] font-sans font-medium text-soft uppercase tracking-[0.15em]">
-    {title}
-  </h3>
-  <div class="flex-1 h-[1px]" style="background: linear-gradient(90deg, rgba(124,58,237,0.15), transparent);"></div>
+<div class="mb-[16px] flex items-center gap-[10px]">
+  <div class="h-[1px] flex-1" style="background:rgba(91,33,182,0.12);"></div>
+  <h3 style="font-size:10px; color:var(--muted); letter-spacing:0.25em; text-transform:uppercase; font-family:Inter,sans-serif;">{title}</h3>
+  <div class="h-[1px] flex-1" style="background:rgba(91,33,182,0.12);"></div>
 </div>
